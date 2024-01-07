@@ -4,6 +4,7 @@ Simple program that pings multiple hosts and saves results to TimescaleDB for an
 
 By sending packets at a fixed interval regardless of outstanding requests it tries to avoid the [Coordinated Omission](http://highscalability.com/blog/2015/10/5/your-load-generator-is-probably-lying-to-you-take-the-red-pi.html) problem. *
 
+
 ## Usage
 
 _See below how to run and set up TimecaleDB._
@@ -25,8 +26,19 @@ Optional configuration:
     export PING_TIMEOUT=2s
     # Comma separated list of destination hosts to ping
     export PING_DESTINATIONS=www.vg.no,192.168.1.1,test.hkg1.servers.com
+    # Override hostname of local machine
+    export PING_SOURCE_HOSTNAME=desktop
 
 The program runs in the foreground forever. You can use `screen` to run it in the background after disconnection from a terminal session.
+
+
+## Analyzing data
+
+Use Grafana and add TimescaleDB as a data source. Then import the very simple [Pings](grafana-dashboard-pings.json) dashboard into Grafana.
+
+<img src="grafana-dashboard-pings.png">
+
+Here we see latency of wired (`nuc`) vs wireless (`desktop`) to the local router (`192.168.1.1`).
 
 ## TimescaleDB preparation
 
@@ -63,6 +75,7 @@ Optionally create a read-only user for the table to use with Grafana.
 ## Caveats
 
 If we are writing data to TimescaleDB close to capacity and there are bursts of requests that suddenly finish, we may not be fast enough to flush the results. If that condition lasts long enough for the result collection queue (size 1000 results) to fill up we will have a coordinated omission problem. Even though I believe this is unlikely the program will print the current size of the queue every 5 seconds.
+
 
 ## Background
 

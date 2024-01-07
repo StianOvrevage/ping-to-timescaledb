@@ -57,6 +57,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not get own hostname: %v", err)
 	}
+	if os.Getenv("PING_SOURCE_HOSTNAME") != "" {
+		hostname = os.Getenv("PING_SOURCE_HOSTNAME")
+	}
 
 	ctx := context.Background()
 	dbpool, err := pgxpool.New(ctx, connStr)
