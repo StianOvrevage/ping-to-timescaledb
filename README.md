@@ -15,7 +15,7 @@ _See below how to run and set up TimecaleDB._
     sudo sysctl -w net.ipv4.ping_group_range="0 2147483647"
     go run main.go
 
-> Assumes you already have [golang installed](https://go.dev/doc/install).
+> Assumes you already have [golang installed](https://go.dev/doc/install), version 1.21.5 or newer.
 
 Optional configuration:
 
